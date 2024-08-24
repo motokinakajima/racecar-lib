@@ -11,6 +11,8 @@ class PIDController:
         self.previous_time = None
 
     def start(self):
+        self.integral = 0
+        self.previous_error = 0
         self.previous_time = time.time()
 
     def update(self, set_point, measured_value):
