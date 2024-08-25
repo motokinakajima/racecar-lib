@@ -1,4 +1,4 @@
-# pid.py
+# pid.py / pid.h
 
 ## 0. PID制御とは
 
@@ -37,7 +37,7 @@ PID制御ではP制御とI制御とD制御の組み合わせによる制御の�
 ゲインとは、それぞれの制御にかける定数のことであり、重みとも考えられます。どの制御がどのくらい出力に影響するのかを決定し、振動がなくエラーを無くすにはゲインの調整が最も重要といっても過言ではありません。
 P制御、I制御、D制御のゲインはそれぞれKp, Ki, Kdと表記されることが一般的です。
 
-## 1. 使い方
+## 1. 使い方 (pid.py)
 ### import
 ```python
 from pid import *
@@ -69,7 +69,7 @@ myPID.start()
 ```python
 set_point = 1.0
 measured_value = measure() #measure is an imaginary function. Use your own measuring function
-output = myPID.update(set_point,measured_value)
+output = myPID.update(set_point, measured_value)
 ```
 update関数はPID制御をするのとほとんど同義です。update関数には二つの引数、目標値と実測値があります。それぞれ数の型(double, int, etc...)の入力を想定しており、目標値、実測値の順番での入力をしてください。start関数を呼び出す前にupdate関数を呼び出してしまうとエラーを吐くので、注意してください。  
 この関数はロボットのループ処理の中で実行されることを想定しており、この出力は何らかのモーターの出力であったり車の車輪の角度であったりに使用するといいでしょう。
@@ -82,6 +82,55 @@ myPID.ki = 0.1
 myPID.kd = 0.1
 ```
 このようにPIDクラスのkp, ki, kdそれぞれの要素に関して変更することができます。
-## 2. 設定のコツ
+## 2. 使い方 (pid.h)
+
+### include
+```cpp
+#include 'pid.h'
+```
+main関数が入っているcppファイルでincludeしてください。pid.hのパスは環境に応じて適宜変えてください。
+
+### initialize
+
+```cpp
+double kp = 0.5;
+double ki = 0.02;
+double kd = 0.05;
+PIDController myPID(kp, ki, kd);
+```
+これでmyPIDというオブジェクトが宣言できます。他にも
+```cpp
+PIDController myPID(0.5, 0.02, 0.05);
+```
+などと宣言することもできます。
+
+### start
+```cpp
+myPID.start();
+```
+これによりmyPIDがスタートされます。機能はpid.pyと同じです。
+
+### update
+```cpp
+double set_point = 1.0;
+double measured_value = measure(); //measure is an imaginary function. Use your own measuring function
+output = myPID.update(set_point, measured_value);
+```
+これも機能はpid.pyと同じです。
+
+### constants
+```cpp
+myPID.setKp(0.1);
+myPID.setKi(0.1);
+myPID.setKd(0.1);
+```
+このようにして処理の途中でもkp, ki, kdを変更することができます。
+```cpp
+double currentKp = myPID.getKp();
+double currentKi = myPID.getKi();
+double currentKd = myPID.getKd();
+```
+このように現時点でのkp, ki, kdを取得することもできます。
+## 3. 設定のコツ
 
 いつか書きます、、、、
