@@ -73,7 +73,7 @@ find_markerはimageにあるARマーカーのうちidが特定のものを一つ
 import cv2
 image = cv2.imread('test.jpg')
 target_id = 2
-x, y = myDetector.get_marker_center(image, target_id)
+x, y = myDetector.get_marker_center(image, targe t_id)
 ```
 get_marker_centerはimageにあるARマーカーのうちidが特定のものの中心点の座標を返します。一つ目の戻り値にはマーカーの中心のx座標、二つ目の戻り値にはマーカーの中心のy座標が出てきます。
 引数の一つ目にはcv2の画像型、二つ目には整数型を入力します。二つ目の引数には探したいidを入力します。この例の場合はidが2のマーカーの中心を出力します。
